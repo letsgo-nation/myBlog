@@ -3,8 +3,8 @@ package com.example.myblog.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class LoginRequestDto {
     private String username;
     private String password;

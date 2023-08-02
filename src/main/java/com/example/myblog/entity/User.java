@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -17,10 +20,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String  username;
-
-    @Column(nullable = false)
-    private String nickname;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -28,7 +28,6 @@ public class User {
     // 왜 쓰는 걸까?
     public User(SignupRequestDto signupRequestDto, String password) {
         this.username = signupRequestDto.getUsername();
-        this.nickname = signupRequestDto.getNickname();
         this.password = password; // 왜 이건 getPassword()가 아닌거지?
 
 
