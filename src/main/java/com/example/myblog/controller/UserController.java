@@ -23,15 +23,6 @@ public class UserController {
 
     // 회원가입 API
     @PostMapping("/signup")
-//    public ResponseEntity<ApiResponseDto> signUp(@Valid @RequestBody SignupRequestDto requestDto) {
-//        // @Valid를 통해 받아오는 테이터의 제한을 걸어둠
-//        try {
-//            userService.signup(requestDto);
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body(new ApiResponseDto("중복된 닉네임입니다.", HttpStatus.BAD_REQUEST.value()));
-//        }
-//        return ResponseEntity.status(200).body(new ApiResponseDto("회원가입에 성공하셨습니다.", HttpStatus.CREATED.value()));
-//    }
 
     public ResponseEntity<ApiResponseDto> signUp(@Valid @RequestBody SignupRequestDto requestDto) {
         try {
@@ -41,9 +32,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
+//    @PostMapping("/login")
+//    public void login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+//        userService.login(requestDto,response);
+//    }
     @PostMapping("/login")
-    public void login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
-        userService.login(requestDto,response);
+    public ResponseEntity<ApiResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+        try {
+            userService.login(requestDto, response);
+            return ResponseEntity.status(HttpStatus.OK).body(new com.example.myblog.dto.ApiResponseDto("로그인에 성공하셨습니다.", HttpStatus.CREATED.value()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new com.example.myblog.dto.ApiResponseDto("닉네임 또는 패스워드를 확인해주세요.", HttpStatus.BAD_REQUEST.value()));
+        }
     }
 }
 
