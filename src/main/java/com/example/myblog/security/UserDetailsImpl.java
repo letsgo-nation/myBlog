@@ -1,6 +1,6 @@
 package com.example.myblog.security;
 
-import entity.User;
+import com.example.myblog.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

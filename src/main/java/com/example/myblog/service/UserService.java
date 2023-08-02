@@ -1,8 +1,8 @@
 package com.example.myblog.service;
 
 import com.example.myblog.dto.SignupRequestDto;
+import com.example.myblog.entity.User;
 import com.example.myblog.repository.UserRepository;
-import entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +18,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     public void signup(SignupRequestDto requestDto) {
     // 1. 입력받은 id와 password 를 저장합니다.
@@ -43,6 +41,6 @@ public class UserService {
     log.info(inputUsername + "님이 회원 가입에 성공하였습니다.");
     }
 
-    
+
 
 }

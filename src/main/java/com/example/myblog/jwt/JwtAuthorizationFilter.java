@@ -2,7 +2,6 @@ package com.example.myblog.jwt;
 
 import com.example.myblog.dto.ApiResponseDto;
 import com.example.myblog.security.UserDetailsServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

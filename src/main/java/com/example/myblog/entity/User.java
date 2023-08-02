@@ -1,16 +1,16 @@
-package entity;
+package com.example.myblog.entity;
 
 import com.example.myblog.dto.SignupRequestDto;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Setter
 @Table(name = "user")
-@EqualsAndHashCode
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)

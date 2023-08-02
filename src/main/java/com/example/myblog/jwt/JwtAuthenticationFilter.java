@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
-            log.info(requestDto.getUsername() + requestDto.getPassword());
+            log.info("아이디:" + requestDto.getUsername() + "비밀번호:" +requestDto.getPassword());
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getUsername(),
@@ -56,7 +56,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         log.info("로그인 실패");
-        response.setStatus(401);
+        log.error("닉네임 또는 패스워드를 확인해주세요.");
+        throw new IllegalArgumentException("닉네임 또는 패스워드를 확인해주세요.");
+//        response.setStatus(401);
     }
 
 }
