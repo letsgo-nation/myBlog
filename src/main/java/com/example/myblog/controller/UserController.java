@@ -1,8 +1,10 @@
 package com.example.myblog.controller;
 
 import com.example.myblog.dto.ApiResponseDto;
+import com.example.myblog.dto.LoginRequestDto;
 import com.example.myblog.dto.SignupRequestDto;
 import com.example.myblog.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
+    @PostMapping("/login")
+    public void login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+        userService.login(requestDto,response);
+    }
 }
-
-    // 로그인 API는 JWtAuthenticationFilter
 

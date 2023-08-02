@@ -1,8 +1,11 @@
 package com.example.myblog.service;
 
+import com.example.myblog.dto.LoginRequestDto;
 import com.example.myblog.dto.SignupRequestDto;
 import com.example.myblog.entity.User;
+import com.example.myblog.jwt.JwtUtil;
 import com.example.myblog.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,35 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-//    public void signup(SignupRequestDto requestDto) {
-//        // 1. 입력받은 id와 password 를 저장합니다.
-//        //    password 는 암호화가 이뤄집니다.
-//        String inputUsername = requestDto.getUsername();
-//        String inputCheckpassword = requestDto.getCheckPassword();
-//
-//        // 비밀번호와 확인 비밀번호가 일치하는지 확인
-//        if (!requestDto.getPassword().equals(requestDto.getCheckPassword())) {
-//            log.info(inputCheckpassword + " 비밀번호가 일치하지 않습니다.");
-//            throw new IllegalArgumentException("비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-//        }
-//        String password = passwordEncoder.encode(requestDto.getPassword());
-//
-//        // 2. user 테이블에 입력받은 id와 동일한 데이터가 있는지 확인합니다.
-//        Optional<User> checkUser = userRepository.findByUsername(inputUsername);
-//
-//        // 2-1. 중복 회원이 있을 경우
-//        if (checkUser.isPresent()) {
-//            // 서버 측에 로그를 찍는 역할을 합니다.
-//            log.error(inputUsername + "와 중복된 사용자가 존재합니다.");
-//            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
-//        }
-//
-////    3. 회원 가입 진행
-//    User user = new User(requestDto, password);
-//    userRepository.save(user);
-//
-//        log.info(inputUsername + "님이 회원 가입에 성공하였습니다");
+    private final JwtUtil jwtUtil;
 
 
     public void signup(SignupRequestDto requestDto) {
@@ -89,4 +64,32 @@ public class UserService {
 
         log.info(inputUsername + "님이 회원 가입에 성공하였습니다");
     }
+
+    // 로그인 메서드
+    public void login(LoginRequestDto requestDto, HttpServletResponse response) {
+        // 클라이언트로 부터 전달 받은 id 와 password 를 가져옵니다.
+        String inputName = requestDto.getUsername();
+        String password = requestDto.getPassword();
+
+        // 사용자를 확인하고, 비밀번호를 확인합니다.
+        Optional<User> checkUser = userRepository.findByUsername(inputName);
+
+        // DB에 없는 사용자인 경우 혹은 비밀번호가 일치하지 않을 경우
+        if (!checkUser.isPresent() || !passwordEncoder.matches(password, checkUser.get().getPassword())) {
+            // 서버 측에 로그를 찍는 역할을 합니다.
+            log.info(requestDto.getUsername());
+            log.info(requestDto.getPassword());
+            log.error("닉네임 또는 패스워드를 확인해주세요.");
+            throw new IllegalArgumentException("닉네임 또는 패스워드를 확인해주세요.");
+        }
+
+        // JWT 생성 및 쿠키에 저장 후 Response 객체에 추가..
+        String token = jwtUtil.createToken(requestDto.getUsername());
+        log.info("token : " + token);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+
+        // 서버 측에 로그를 찍는 역할을 합니다.
+        log.info(inputName + "님이 로그인에 성공하였습니다");
+    }
+
 }
