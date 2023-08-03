@@ -1,5 +1,6 @@
 package com.example.myblog.dto;
 
+import com.example.myblog.entity.Comment;
 import com.example.myblog.entity.Post;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,9 +21,8 @@ public class PostResponseDto {
     private String username;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-//    private int commentCnt;
-//    private List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-//    private List<SecondCommentResponseDto> SecondCommentResponseDtoList = new ArrayList<>();
+    private List<CommentResponseDto> commentResponseDtoList;
+    private Long user_id;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
@@ -31,7 +31,13 @@ public class PostResponseDto {
         this.username = post.getUser().getUsername();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
-//        this.commentCnt = post.getCommentList().size();
+        this.user_id = post.getUser().getId();
+        if(post.getCommentList().size()>0) {
+            this.commentResponseDtoList = new ArrayList<>();
+            for (Comment comment : post.getCommentList()) {
+                this.commentResponseDtoList.add(new CommentResponseDto(comment));
+            }
+        }// end of the if()
     }
 
 //    public void setCommentResponseDtoList(List<Comment> sortedCommentList) {
