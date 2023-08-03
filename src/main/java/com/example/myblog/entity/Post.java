@@ -44,5 +44,11 @@ public class Post {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
     }
+
+    public void update(PostRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+    }
+
 }
 

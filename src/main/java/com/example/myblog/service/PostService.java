@@ -63,6 +63,15 @@ public class PostService {
     public void deletePost(Long id, User user) {
         Post post = findPost(id);
 
+        // 게시글 작성자인지
+        Long writerId = post.getUser().getId();
+        Long loginId = user.getId();
+        // 작성자가 아니고 관리자도 아님 경우 -> true && true
+        // 작성자는 아니지만 관리자일 경우 -> 수정 가능. true && false
+        if(!writerId.equals(loginId)){
+            throw new IllegalArgumentException("작성자만 삭제 할 수 있습니다.");
+        }
+
         postRepository.delete(post);
     }
 
@@ -70,9 +79,15 @@ public class PostService {
     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
         Post post = findPost(id);
 
-        post.setTitle(requestDto.getTitle());
-        post.setContent(requestDto.getContent());
+        // 게시글 작성자인지
+        Long writerId = post.getUser().getId(); // 게시글 작성자 id
+        Long loginId = user.getId(); // 현재 로그인한 id
+        // 게시글 작성자가 아닐 경우
+        if(!writerId.equals(loginId)){
+            throw new IllegalArgumentException("작성자만 수정 할 수 있습니다.");
+        }
 
+        post.update(requestDto);
         return new PostResponseDto(post);
     }
 
