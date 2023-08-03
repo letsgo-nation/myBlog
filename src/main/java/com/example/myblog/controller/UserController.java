@@ -32,10 +32,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
-//    @PostMapping("/login")
-//    public void login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
-//        userService.login(requestDto,response);
-//    }
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
         try {
